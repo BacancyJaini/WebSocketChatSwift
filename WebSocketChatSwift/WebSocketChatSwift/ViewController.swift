@@ -25,8 +25,13 @@ class ViewController: UIViewController {
         synthesizer.speak(utterance)
     }
 
-    @IBAction func goToChatClick(_ sender: UIButton) {
+    @IBAction func webSocketChatClick(_ sender: UIButton) {
         guard let vc = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ChatViewController") as? ChatViewController else { return }
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+
+    @IBAction func socketChatClick(_ sender: UIButton) {
+        guard let vc = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "SocketChatViewController") as? SocketChatViewController else { return }
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

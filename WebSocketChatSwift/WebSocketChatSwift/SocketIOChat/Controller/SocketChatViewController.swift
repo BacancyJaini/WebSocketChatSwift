@@ -1,14 +1,14 @@
 //
-//  ChatViewController.swift
-//  TextSpeechDemo
+//  SocketChatViewController.swift
+//  WebSocketChatSwift
 //
-//  Created by Jaini on 12/02/24.
+//  Created by Jaini on 16/02/24.
 //
 
 import UIKit
 import Combine
 
-class ChatViewController: UIViewController {
+class SocketChatViewController: UIViewController {
     @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var messageTextView: UITextView!
     @IBOutlet weak var chatTableView: UITableView!
@@ -16,14 +16,15 @@ class ChatViewController: UIViewController {
     @IBOutlet weak var scrollToBottomButton: UIButton!
 
     @IBOutlet weak var backgroundViewBottomConst: NSLayoutConstraint!
-    
+
     @IBOutlet weak var messageTextViewHeightConst: NSLayoutConstraint!
-    
-    var chatViewModel: ChatViewModel?
+
+    var socketChatViewModel: SocketChatViewModel?
     var cancellable: AnyCancellable?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = "Welcome"
         scrollToBottomButton.layer.cornerRadius = 10.0
         messageTextView.layer.cornerRadius = 15.0
         messageTextView.textContainerInset = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 8.0, right: 5.0)
@@ -35,10 +36,10 @@ class ChatViewController: UIViewController {
         chatTableView.register(UINib(nibName: "ReceiverTableViewCell", bundle: nil), forCellReuseIdentifier: "ReceiverTableViewCell")
 
         // Do any additional setup after loading the view.
-        chatViewModel = ChatViewModel(webSocketManager: WebSocketManager())
-        chatViewModel?.connect()
+        socketChatViewModel = SocketChatViewModel(socketManager: SocketIOManager())
+        socketChatViewModel?.connect()
 
-        cancellable = chatViewModel?.$messageDataModel
+        cancellable = socketChatViewModel?.$messageDataModel
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] data in
                 guard let self, !data.isEmpty else { return }
@@ -50,23 +51,23 @@ class ChatViewController: UIViewController {
     }
 
     override func viewDidDisappear(_ animated: Bool) {
-        chatViewModel?.disConnect()
+        socketChatViewModel?.disConnect()
     }
 
     private func scrollToBottom() {
-        let indexPath = IndexPath(row: (chatViewModel?.messageDataModel.count ?? 1) - 1, section: 0)
+        let indexPath = IndexPath(row: (socketChatViewModel?.messageDataModel.count ?? 1) - 1, section: 0)
         self.chatTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
     }
 
     private func sendMessage() {
-        chatViewModel?.message = messageTextView.text ?? ""
-        chatViewModel?.sendMessage()
+        socketChatViewModel?.message = messageTextView.text ?? ""
+        socketChatViewModel?.sendMessage()
         messageTextView.text = ""
         messageTextViewHeightConst.constant = 37.0
     }
 }
 
-extension ChatViewController {
+extension SocketChatViewController {
     @objc func keyboardWillShow(_ notification: Notification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             UIView.animate(withDuration: 0.3) {
@@ -84,13 +85,13 @@ extension ChatViewController {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let visibleRows = chatTableView.indexPathsForVisibleRows ?? []
         if let lastVisibleIndexPath = visibleRows.last {
-            let endOfScroll = lastVisibleIndexPath.row == (chatViewModel?.messageDataModel.count ?? 1) - 1
+            let endOfScroll = lastVisibleIndexPath.row == (socketChatViewModel?.messageDataModel.count ?? 1) - 1
             scrollToBottomButton.isHidden = endOfScroll
         }
     }
 }
 
-extension ChatViewController {
+extension SocketChatViewController {
     @IBAction func sendClick(_ sender: UIButton) {
         sendMessage()
     }
@@ -100,13 +101,13 @@ extension ChatViewController {
     }
 }
 
-extension ChatViewController: UITableViewDataSource, UITableViewDelegate {
+extension SocketChatViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return chatViewModel?.messageDataModel.count ?? 0
+        return socketChatViewModel?.messageDataModel.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let model = chatViewModel?.messageDataModel[indexPath.row] {
+        if let model = socketChatViewModel?.messageDataModel[indexPath.row] {
             if model.isFromReceiver {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: "ReceiverTableViewCell", for: indexPath) as? ReceiverTableViewCell else { return UITableViewCell() }
                 cell.messageConfiguration(model: model)
@@ -119,14 +120,9 @@ extension ChatViewController: UITableViewDataSource, UITableViewDelegate {
         }
         return UITableViewCell()
     }
-
-//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        let endOfTable = indexPath.row + 1 == chatViewModel?.messageDataModel.count
-//        scrollToBottomButton.isHidden = endOfTable
-//    }
 }
 
-extension ChatViewController: UITextViewDelegate {
+extension SocketChatViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         placeholderLabel.isHidden = !textView.text.isEmpty
     }

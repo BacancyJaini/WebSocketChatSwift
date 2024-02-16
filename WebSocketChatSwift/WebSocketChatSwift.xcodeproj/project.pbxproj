@@ -26,6 +26,10 @@
 		CE9769672B7E13A20052D611 /* ReceiverTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97695C2B7E13A20052D611 /* ReceiverTableViewCell.swift */; };
 		CE9769682B7E13A20052D611 /* SenderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE97695D2B7E13A20052D611 /* SenderTableViewCell.xib */; };
 		CE9769692B7E13A20052D611 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97695F2B7E13A20052D611 /* Message.swift */; };
+		CE9769702B7E23910052D611 /* SocketIOManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE97696F2B7E23910052D611 /* SocketIOManager.swift */; };
+		CE9769732B7E23B10052D611 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = CE9769722B7E23B10052D611 /* SocketIO */; };
+		CEAC31CA2B7F368500C1EC36 /* SocketChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC31C92B7F368500C1EC36 /* SocketChatViewController.swift */; };
+		CEAC31CC2B7F369600C1EC36 /* SocketChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAC31CB2B7F369600C1EC36 /* SocketChatViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +73,9 @@
 		CE97695C2B7E13A20052D611 /* ReceiverTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReceiverTableViewCell.swift; sourceTree = "<group>"; };
 		CE97695D2B7E13A20052D611 /* SenderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SenderTableViewCell.xib; sourceTree = "<group>"; };
 		CE97695F2B7E13A20052D611 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		CE97696F2B7E23910052D611 /* SocketIOManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketIOManager.swift; sourceTree = "<group>"; };
+		CEAC31C92B7F368500C1EC36 /* SocketChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketChatViewController.swift; sourceTree = "<group>"; };
+		CEAC31CB2B7F369600C1EC36 /* SocketChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketChatViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE9769732B7E23B10052D611 /* SocketIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,7 +130,8 @@
 				CE97691D2B7E0F230052D611 /* AppDelegate.swift */,
 				CE97691F2B7E0F230052D611 /* SceneDelegate.swift */,
 				CE9769212B7E0F230052D611 /* ViewController.swift */,
-				CE9769542B7E13A20052D611 /* Chat */,
+				CEAC31C62B7F365200C1EC36 /* SocketIOChat */,
+				CE9769542B7E13A20052D611 /* WebSocketChat */,
 				CE9769502B7E13A20052D611 /* Helper */,
 				CE97694D2B7E13A20052D611 /* Service */,
 				CE9769232B7E0F230052D611 /* Main.storyboard */,
@@ -162,6 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				CE97694F2B7E13A20052D611 /* WebSocketManager.swift */,
+				CE97696F2B7E23910052D611 /* SocketIOManager.swift */,
 			);
 			path = SocketServices;
 			sourceTree = "<group>";
@@ -183,14 +193,14 @@
 			path = CommonMethods;
 			sourceTree = "<group>";
 		};
-		CE9769542B7E13A20052D611 /* Chat */ = {
+		CE9769542B7E13A20052D611 /* WebSocketChat */ = {
 			isa = PBXGroup;
 			children = (
 				CE9769552B7E13A20052D611 /* ViewModel */,
 				CE9769572B7E13A20052D611 /* Controller */,
 				CE97695E2B7E13A20052D611 /* Model */,
 			);
-			path = Chat;
+			path = WebSocketChat;
 			sourceTree = "<group>";
 		};
 		CE9769552B7E13A20052D611 /* ViewModel */ = {
@@ -229,6 +239,31 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		CEAC31C62B7F365200C1EC36 /* SocketIOChat */ = {
+			isa = PBXGroup;
+			children = (
+				CEAC31C82B7F366600C1EC36 /* Controller */,
+				CEAC31C72B7F365F00C1EC36 /* ViewModel */,
+			);
+			path = SocketIOChat;
+			sourceTree = "<group>";
+		};
+		CEAC31C72B7F365F00C1EC36 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CEAC31CB2B7F369600C1EC36 /* SocketChatViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		CEAC31C82B7F366600C1EC36 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CEAC31C92B7F368500C1EC36 /* SocketChatViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -245,6 +280,9 @@
 			dependencies = (
 			);
 			name = WebSocketChatSwift;
+			packageProductDependencies = (
+				CE9769722B7E23B10052D611 /* SocketIO */,
+			);
 			productName = WebSocketChatSwift;
 			productReference = CE97691A2B7E0F230052D611 /* WebSocketChatSwift.app */;
 			productType = "com.apple.product-type.application";
@@ -317,6 +355,9 @@
 				Base,
 			);
 			mainGroup = CE9769112B7E0F230052D611;
+			packageReferences = (
+				CE9769712B7E23B10052D611 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */,
+			);
 			productRefGroup = CE97691B2B7E0F230052D611 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -365,9 +406,12 @@
 				CE9769622B7E13A20052D611 /* PaddedLabel.swift in Sources */,
 				CE9769632B7E13A20052D611 /* ChatViewModel.swift in Sources */,
 				CE9769642B7E13A20052D611 /* ChatViewController.swift in Sources */,
+				CEAC31CC2B7F369600C1EC36 /* SocketChatViewModel.swift in Sources */,
 				CE9769662B7E13A20052D611 /* SenderTableViewCell.swift in Sources */,
+				CE9769702B7E23910052D611 /* SocketIOManager.swift in Sources */,
 				CE9769672B7E13A20052D611 /* ReceiverTableViewCell.swift in Sources */,
 				CE9769222B7E0F230052D611 /* ViewController.swift in Sources */,
+				CEAC31CA2B7F368500C1EC36 /* SocketChatViewController.swift in Sources */,
 				CE9769692B7E13A20052D611 /* Message.swift in Sources */,
 				CE97691E2B7E0F230052D611 /* AppDelegate.swift in Sources */,
 				CE9769202B7E0F230052D611 /* SceneDelegate.swift in Sources */,
@@ -713,6 +757,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CE9769712B7E23B10052D611 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/socketio/socket.io-client-swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CE9769722B7E23B10052D611 /* SocketIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CE9769712B7E23B10052D611 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */;
+			productName = SocketIO;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CE9769122B7E0F230052D611 /* Project object */;
 }
